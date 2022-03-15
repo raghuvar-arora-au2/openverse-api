@@ -128,8 +128,15 @@ jobs:
 
       - name: Start API, ingest and index test data
         run: just init
+
       - name: Run API tests
+        continue-on-error: true
         run: just api-test -T
+
+      - name: Print API test failure logs
+        if: {{ failure() }}
+        run: just logs
+
       - name: Run analytics tests
         run: just nl-test -T
 
